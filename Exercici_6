@@ -11,9 +11,9 @@ def new_item_price():
     try:
         item_price = input("Price of the new item: ")
         if item_price[0].isdigit() == False and item_price[1:].isdigit() == False:
-            raise AssertionError("Not numeric price")
+            raise AssertionError("Price has to be numeric")
         elif item_price[0] == "-" and item_price[1:].isdigit():
-            raise AssertionError("Negative price")
+            raise AssertionError("Price cannot be negative")
         else:
             print(item_price)
     except AssertionError as e:
