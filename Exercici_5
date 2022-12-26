@@ -1,0 +1,23 @@
+"""
+Crearem una funció amb el nom new_item_stock(). Que no rebrà cap paràmetre. En cridar a aquesta funció,
+ens demanarà per consola un enter positiu, i en cas de ser correcte, ens ho tornarà.
+
+Aquesta funció llançarà excepcions del tipus AssertionError en cas que:
+• El stock que introduïu l'usuari no sigui numèric o negatiu.
+
+I ens mostrarà un missatge descriptiu de l'error corresponent, tornant a demanar un stock a l'usuari.
+"""
+
+def new_item_stock():
+    try:
+        item_stock = input("Items in stock: ")
+        if item_stock[0].isdigit() == False and item_stock[1:].isdigit() == False:
+            raise AssertionError("Not numeric stock")
+        elif item_stock[0] == "-" and item_stock[1:].isdigit():
+            raise AssertionError("Negative stock")
+        else:
+            print(item_stock)
+    except AssertionError as e:
+        print(e)
+        new_item_stock()
+new_item_stock()
