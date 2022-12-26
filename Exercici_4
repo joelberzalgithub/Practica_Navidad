@@ -1,0 +1,36 @@
+"""
+Crearem una funció amb el nom new_item_id(). Que no rebrà cap paràmetre.
+En cridar a aquesta funció, ens demanarà un ID d'article. Aquest id ha de ser numèric.
+I en cas de ser un id correcte, ens tornarà aquest ID.
+
+Aquesta funció llançarà excepcions del tipus AssertionError en cas que:
+• L'ID que introduïu l'usuari no sigui numèric.
+• L'ID que introduïu l'usuari sigui negatiu.
+• L'ID ja existeix al diccionari dict_articles.
+
+I ens mostrarà un missatge descriptiu de l'error corresponent, tornant a demanar un ID a l'usuari.
+"""
+
+dict_articulos = {4: {"nombre": "ASUS TUF GeForce RTX", "stock": 6, "precio": 1400},
+ 2: {"nombre": "ASUS DUAL Radeon RX6600", "stock": 12, "precio": 294},
+ 3: {"nombre": "Intel Core i7-13700K", "stock": 9, "precio": 530},
+ 1: {"nombre": "Kingston Fury Beast 32GB", "stock": 10, "precio": 180},
+ 10: {"nombre": "Corsair DC Cable Pro Kit", "stock": 20, "precio": 110},
+ 11: {"nombre": "Gigabyte GC-TITAN RIDGE 2.0", "stock": 15, "precio": 81},
+ }
+
+def new_item_id():
+    try:
+        item_id = input("Id of the new item: ")
+        if item_id[0].isdigit() == False and item_id[1:].isdigit() == False:
+            raise AssertionError("Not numeric ID")
+        elif item_id[0] == "-" and item_id[1:].isdigit():
+            raise AssertionError("Negative ID")
+        elif int(item_id) in dict_articulos.keys():
+            raise AssertionError("ID: {} alredy exists".format(item_id))
+        else:
+            print(item_id)
+    except AssertionError as e:
+        print(e)
+        new_item_id()
+new_item_id()
