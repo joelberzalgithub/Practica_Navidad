@@ -12,9 +12,9 @@ def new_item_stock():
     try:
         item_stock = input("Items in stock: ")
         if item_stock[0].isdigit() == False and item_stock[1:].isdigit() == False:
-            raise AssertionError("Not numeric stock")
+            raise AssertionError("Stock has to be numeric")
         elif item_stock[0] == "-" and item_stock[1:].isdigit():
-            raise AssertionError("Negative stock")
+            raise AssertionError("Stock cannot be negative")
         else:
             print(item_stock)
     except AssertionError as e:
