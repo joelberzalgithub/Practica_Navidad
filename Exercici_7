@@ -1,0 +1,40 @@
+"""
+Crearem una funció amb el nom new_item_name(). Que no rebrà cap paràmetre.
+
+En cridar a aquesta funció, ens demanarà el nom d'un article, i en cas de no existir, ens ho tornarà.
+
+Aquesta funció llançarà excepcions del tipus ValueError en cas que:
+• El nom que introduïu l'usuari ja existeixi al diccionari dict_articulos, Sense distingir majúscules de minúscules.
+• El nom que s'introdueixi estigui buit o només tingui espais.
+
+I ens mostrarà un missatge descriptiu de l'error corresponent, tornant a demanar un nom a l'usuari.
+"""
+
+dict_articulos = {4: {"nombre": "ASUS TUF GeForce RTX", "stock": 6, "precio": 1400},
+ 2: {"nombre": "ASUS DUAL Radeon RX6600", "stock": 12, "precio": 294},
+ 3: {"nombre": "Intel Core i7-13700K", "stock": 9, "precio": 530},
+ 1: {"nombre": "Kingston Fury Beast 32GB", "stock": 10, "precio": 180},
+ 10: {"nombre": "Corsair DC Cable Pro Kit", "stock": 20, "precio": 110},
+ 11: {"nombre": "Gigabyte GC-TITAN RIDGE 2.0", "stock": 15, "precio": 81},
+ }
+
+def new_item_name():
+    try:
+        item_name = input("Item's name: ")
+        if item_name == dict_articulos[4]["nombre"] \
+            or item_name == dict_articulos[2]["nombre"] \
+            or item_name == dict_articulos[3]["nombre"] \
+            or item_name == dict_articulos[1]["nombre"] \
+            or item_name == dict_articulos[10]["nombre"] \
+            or item_name == dict_articulos[11]["nombre"]:
+            raise ValueError("Name: {} alredy exists".format(item_name))
+        elif item_name == "":
+            raise ValueError("Name cannot be empty")
+        elif item_name.isspace():
+            raise ValueError("Name cannot contain only spaces")
+        else:
+            print(item_name)
+    except ValueError as e:
+        print(e)
+        new_item_name()
+new_item_name()
