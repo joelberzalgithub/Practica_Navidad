@@ -1,0 +1,22 @@
+"""
+Crearem una funció amb el nom new_item_price(). Que no rebrà cap paràmetre. En cridar a aquesta funció,
+ens demanarà un preu que ha de ser un enter positiu, i en cas de ser correcte, ens ho retornarà.
+
+Aquesta funció llançarà excepcions del tipus AssertionError en cas que:
+• El preu que introduïu l'usuari no sigui numèric o sigui negatiu.
+
+I ens mostrarà un missatge descriptiu de lerror corresponent, tornant a demanar un preu a l'usuari.
+"""
+def new_item_price():
+    try:
+        item_price = input("Price of the new item: ")
+        if item_price[0].isdigit() == False and item_price[1:].isdigit() == False:
+            raise AssertionError("Not numeric price")
+        elif item_price[0] == "-" and item_price[1:].isdigit():
+            raise AssertionError("Negative price")
+        else:
+            print(item_price)
+    except AssertionError as e:
+        print(e)
+        new_item_price()
+new_item_price()
