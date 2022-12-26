@@ -1,0 +1,22 @@
+"""
+Crearem una funció que anomenarem new_tfn(). Aquesta funció no rebrà cap paràmetre,
+demanarà un telèfon per consola i en cas de ser un telèfon correcte (9 números),
+ens tornarà un string amb el telèfon introduït per consola.
+
+Aquesta funció llançarà excepcions del tipus ValueError en el cas que:
+• El telèfon no té un format adequat (9 números).
+
+I ens mostrarà un missatge descriptiu de l'error corresponent, tornant a demanar un telèfon a l'usuari.
+"""
+
+def new_tfn():
+    try:
+        tfn = input("Tfn of the new customer: ")
+        if tfn.isdigit() and len(tfn) == 9:
+            print(tfn)
+        else:
+            raise ValueError
+    except ValueError:
+        print("Incorrect TFN")
+        new_tfn()
+new_tfn()
