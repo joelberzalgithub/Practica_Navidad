@@ -23,9 +23,9 @@ def new_item_id():
     try:
         item_id = input("Id of the new item: ")
         if item_id[0].isdigit() == False and item_id[1:].isdigit() == False:
-            raise AssertionError("Not numeric ID")
+            raise AssertionError("ID has to be numeric")
         elif item_id[0] == "-" and item_id[1:].isdigit():
-            raise AssertionError("Negative ID")
+            raise AssertionError("ID cannot be negative")
         elif int(item_id) in dict_articulos.keys():
             raise AssertionError("ID: {} alredy exists".format(item_id))
         else:
