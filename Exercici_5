@@ -11,12 +11,12 @@ I ens mostrarà un missatge descriptiu de l'error corresponent, tornant a demana
 def new_item_stock():
     try:
         item_stock = input("Items in stock: ")
-        if item_stock[0].isdigit() == False and item_stock[1:].isdigit() == False:
-            raise AssertionError("Stock has to be numeric")
+        if item_stock.isdigit():
+            print(item_stock)
         elif item_stock[0] == "-" and item_stock[1:].isdigit():
             raise AssertionError("Stock cannot be negative")
         else:
-            print(item_stock)
+            raise AssertionError("Stock of items are only numerics")
     except AssertionError as e:
         print(e)
         new_item_stock()
