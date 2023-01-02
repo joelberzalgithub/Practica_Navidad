@@ -22,14 +22,14 @@ dict_articulos = {4: {"nombre": "ASUS TUF GeForce RTX", "stock": 6, "precio": 14
 def new_item_id():
     try:
         item_id = input("Id of the new item: ")
-        if item_id[0].isdigit() == False and item_id[1:].isdigit() == False:
-            raise AssertionError("ID of items are only numerics")
+        if item_id.isdigit() and not int(item_id) in dict_articulos.keys():
+            print(item_id)
+        elif item_id.isdigit() and int(item_id) in dict_articulos.keys():
+            raise AssertionError("ID: {} alredy exists".format(item_id))
         elif item_id[0] == "-" and item_id[1:].isdigit():
             raise AssertionError("ID cannot be negative")
-        elif int(item_id) in dict_articulos.keys():
-            raise AssertionError("ID: {} alredy exists".format(item_id))
         else:
-            print(item_id)
+            raise AssertionError("ID of items are only numerics")
     except AssertionError as e:
         print(e)
         new_item_id()
