@@ -19,16 +19,13 @@ dict_articulos = {4: {"nombre": "ASUS TUF GeForce RTX", "stock": 6, "precio": 14
  }
 
 def new_item_name():
+    llaves_dict_articulos = list(dict_articulos.keys())
     try:
         item_name = input("Item's name: ")
-        if item_name == dict_articulos[4]["nombre"] \
-            or item_name == dict_articulos[2]["nombre"] \
-            or item_name == dict_articulos[3]["nombre"] \
-            or item_name == dict_articulos[1]["nombre"] \
-            or item_name == dict_articulos[10]["nombre"] \
-            or item_name == dict_articulos[11]["nombre"]:
-            raise ValueError("Name: {} alredy exists".format(item_name))
-        elif item_name == "":
+        for i in range(len(dict_articulos)):
+            if item_name == dict_articulos[llaves_dict_articulos[i]]["nombre"]:
+                raise ValueError("Name: {} alredy exists".format(item_name))
+        if item_name == "":
             raise ValueError("Name cannot be empty")
         elif item_name.isspace():
             raise ValueError("Name cannot contain only spaces")
