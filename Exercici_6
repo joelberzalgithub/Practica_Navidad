@@ -10,12 +10,12 @@ I ens mostrarà un missatge descriptiu de lerror corresponent, tornant a demanar
 def new_item_price():
     try:
         item_price = input("Price of the new item: ")
-        if item_price[0].isdigit() == False and item_price[1:].isdigit() == False:
-            raise AssertionError("Price has to be numeric")
+        if item_price.isdigit():
+            print(item_price)
         elif item_price[0] == "-" and item_price[1:].isdigit():
             raise AssertionError("Price cannot be negative")
         else:
-            print(item_price)
+            raise AssertionError("Price of items are only numerics")
     except AssertionError as e:
         print(e)
         new_item_price()
