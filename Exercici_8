@@ -22,14 +22,14 @@ dict_articulos = {4: {"nombre": "ASUS TUF GeForce RTX", "stock": 6, "precio": 14
 def find_item_id():
     try:
         item_id = input("Id of the item to find: ")
-        if item_id[0].isdigit() == False and item_id[1:].isdigit() == False:
-            raise ValueError("ID of items are only numerics")
+        if item_id.isdigit() and int(item_id) in dict_articulos.keys():
+            print(item_id)
         elif item_id[0] == "-" and item_id[1:].isdigit():
             raise ValueError("ID cannot be negative")
-        elif not int(item_id) in dict_articulos.keys():
+        elif item_id.isdigit() and not int(item_id) in dict_articulos.keys():
             raise ValueError("There's no item with ID: {}".format(item_id))
         else:
-            print(item_id)
+            raise ValueError("ID of items are only numerics")
     except ValueError as e:
         print(e)
         find_item_id()
