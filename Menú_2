@@ -1,0 +1,137 @@
+import les_meves_funcions.funcions
+import les_meves_funcions.dades
+
+list_al_purch = "ID Compra".ljust(20) + "Client".ljust(30) + "Fecha".rjust(8) + "Total compras".rjust(20) + "\n" + "*" * 78 + "\n"
+list_purch_w_item = "ID".ljust(10) + "Customer".ljust(25) + "ID item".ljust(9) + "Name item".ljust(30) + "Amount".rjust(6) + "Price".rjust(10) + "\n" + "*" * 98
+
+flg_02 = True
+flg_22 = False
+
+while flg_02:
+    opt = les_meves_funcions.funcions.getOpt("*" * 12 + "Menu Purchases" + "*" * 13 + "\n" + "1) Find purchase"\
+                                             + "\n" + "2) List purchases" + "\n" + "3) New purchase"+"\n" + "4) Go back",
+                                             "Option: ", [1, 2, 3, 4], {}, [])
+    if opt == 1:
+        print("No implementado!!\n")
+        input("Press any key to continue\n")
+
+    if opt == 2:
+        input("\nPress any key to continue\n")
+        flg_02 = False
+        flg_22 = True
+
+    if opt == 3:
+        print("No implementado!!\n")
+        input("Press any key to continue\n")
+
+    elif opt == 4:
+        flg_02 = False
+        menu00 = True
+
+while flg_22:
+    opt = les_meves_funcions.funcions.getOpt("*" * 10 + "Menu List Purchases" + "*" * 11 + "\n" + "1) List all purchases"\
+                                                     + "\n" + "2) List purchases that contain some item"+"\n" + "3) Go Back"\
+                                                     + "\n" + "4) Main menu", "Option: ", [1, 2, 3, 4], {}, [])
+    if opt == 1:
+        keys = les_meves_funcions.dades.dict_compras.keys()
+        total = len(keys)
+        # print(total)
+        lista = list(keys)
+        # print(lista)
+        for i in range(total):
+            list_al_purch += str((lista[i]).ljust(20)) + str(
+                les_meves_funcions.dades.dict_clientes[les_meves_funcions.dades.compra_cliente[lista[i]]]["nombre"])\
+                .ljust(30) + str(les_meves_funcions.dades.dict_compras[lista[i]]["fecha"])
+            # print(dict_compras[lista[i]]["articulos"])
+            articles = list(les_meves_funcions.dades.dict_compras[lista[i]]["articulos"].keys())
+            # print(articles)
+            suma = 0
+            price = 0
+            amount = 0
+            for j in range(len(articles)):
+                price = (les_meves_funcions.dades.dict_articulos[articles[j]]["precio"])
+                amount = (les_meves_funcions.dades.dict_compras[lista[i]]["articulos"][articles[j]])
+                suma += price * amount
+
+            list_al_purch += str(suma).rjust(20) + "\n"
+        # (lista[i]).ljust(20))+str((dict_clientes.get(compra_cliente.get(lista[i]).get("nombre")
+        # (dict_clientes.get(compra_cliente.get(lista[i]),"nombre"))
+        print(list_al_purch)
+        input("Press any key to continue\n")
+        list_al_purch = "ID Compra".ljust(20) + "Client".ljust(30) + "Fecha".rjust(8) + "Total compras".rjust(20)\
+                        + "\n" + "*" * 78 + "\n"
+    elif opt == 2:
+        wholelistbyitem = ""
+        total_price = 0
+        exists = False
+        ID = les_meves_funcions.funcions.find_item_id()
+        listaid = list(les_meves_funcions.dades.dict_articulos.keys())
+        # print(listaid)
+        # print(len(listaid))
+        # print(list_purch_w_item)
+        for i in range(len(listaid)):
+            # print(listaid[i])
+            if ID == int(listaid[i]):
+                print("Listamos compras del articulo " + str(ID) + "\n")
+                keys = les_meves_funcions.dades.dict_compras.keys()
+                total = len(keys)
+                # print(total)
+                lista = list(keys)
+                # print(lista)
+                for j in range(total):
+                    lista_compra = list(les_meves_funcions.dades.dict_compras[lista[j]]["articulos"])
+                    # print(lista_compra)
+                    if ID in lista_compra:
+                        wholelistbyitem += list_purch_w_item + "\n" + lista[j].ljust(10) \
+                                            + les_meves_funcions.dades.dict_clientes[les_meves_funcions.dades.compra_cliente[lista[j]]]["nombre"].ljust(25)
+                        for k in range(len(lista_compra)):
+                            if k == 0:
+                                wholelistbyitem += str(
+                                    list(les_meves_funcions.dades.dict_compras[lista[j]]["articulos"])[k]).rjust(7) + "  " \
+                                                    + les_meves_funcions.dades.dict_articulos[
+                                                       list(les_meves_funcions.dades.dict_compras[lista[j]]["articulos"])[k]][
+                                                       "nombre"].ljust(30) + \
+                                                    str(les_meves_funcions.dades.dict_compras[lista[j]]["articulos"][
+                                                            list(les_meves_funcions.dades.dict_compras[lista[j]]["articulos"])[
+                                                                k]]).rjust(6) + str(
+                                    les_meves_funcions.dades.dict_articulos[list(les_meves_funcions.dades.dict_compras[lista[j]]["articulos"])[k]][
+                                        "precio"]).rjust(10) + "\n"
+                                total_price += \
+                                les_meves_funcions.dades.dict_articulos[list(les_meves_funcions.dades.dict_compras[lista[j]]["articulos"])[k]]["precio"] * \
+                                les_meves_funcions.dades.dict_compras[lista[j]]["articulos"][
+                                    list(les_meves_funcions.dades.dict_compras[lista[j]]["articulos"])[k]]
+                            else:
+                                wholelistbyitem += str(
+                                    list(les_meves_funcions.dades.dict_compras[lista[j]]["articulos"])[k]).rjust(42) + \
+                                                   "  " + les_meves_funcions.dades.dict_articulos[
+                                                        list(les_meves_funcions.dades.dict_compras[lista[j]]["articulos"])[k]][
+                                                        "nombre"].ljust(30) + \
+                                                    str(les_meves_funcions.dades.dict_compras[lista[j]]["articulos"][
+                                                           list(les_meves_funcions.dades.dict_compras[lista[j]]["articulos"])[
+                                                               k]]).rjust(6) + str(
+                                    les_meves_funcions.dades.dict_articulos[list(les_meves_funcions.dades.dict_compras[lista[j]]["articulos"])[k]][
+                                        "precio"]).rjust(10) + "\n"
+                                total_price += \
+                                les_meves_funcions.dades.dict_articulos[list(les_meves_funcions.dades.dict_compras[lista[j]]["articulos"])[k]][
+                                    "precio"] * les_meves_funcions.dades.dict_compras[lista[j]]["articulos"][
+                                    list(les_meves_funcions.dades.dict_compras[lista[j]]["articulos"])[k]]
+                                if k == (len(lista_compra)) - 1:
+                                    wholelistbyitem += "-" * 98 + "\n" + "Total".ljust(5) + str(
+                                        total_price).rjust(85) + "\n" + "\n"
+                                    total_price = 0
+
+                print(wholelistbyitem)
+                vueltas = 0
+                exists = True
+                break
+        if not exists:
+            print("There is no item with ID: " + str(ID))
+        list_purch_w_item = "ID".ljust(10) + "Customer".ljust(25) + "ID item".ljust(9) + "Name item".ljust(30) + \
+                            "Amount".rjust(6) + "Price".rjust(10) + "\n" + "*" * 98
+    elif opt == 3:
+        flg_22 = False
+        flg_02 = True
+
+    elif opt == 4:
+        flg_22 = False
+        menu00 = True
