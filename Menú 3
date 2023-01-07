@@ -1,0 +1,198 @@
+import les_meves_funcions.funcions
+import les_meves_funcions.dades
+
+llaves_clientes = list(les_meves_funcions.dades.dict_clientes.keys())
+valores_clientes = list(les_meves_funcions.dades.dict_clientes.values())
+lista_nombres = []
+contador_id_1 = 0
+contador_id_2 = 0
+nif = ""
+
+flg_03 = True
+flg_32 = False
+flg_321 = False
+
+while flg_03:
+    opt = les_meves_funcions.funcions.getOpt("*" * 16 + "Menu Customers" + "*" * 16 + "\n" + "1)New customer" + "\n" +
+                                             "2)Find customer" + "\n" + "3)Go back", "Option: ", [1, 2, 3], {}, [])
+    if int(opt) == 1:
+        print("\n" + "*" * 6 + "New Customer" + "*" * 6)
+        new_nif = les_meves_funcions.funcions.new_nif("yes")
+        print("DNI is correct")
+        input("\nPress any key to continue\n")
+        new_name = les_meves_funcions.funcions.new_item_name()
+        new_tfn = les_meves_funcions.funcions.new_tfn()
+        print("Do you want to create the new customer? Y/y = yes:" + "\n" * 2 +
+              "NIF: " + new_nif.rjust(32) + "\n" +
+              "Name: " + new_name.rjust(31) + "\n" +
+              "Tfn: " + str(new_tfn).rjust(32) + "\n")
+        answer = input("Answer:\n")
+        if answer == "Y" or answer == "y":
+            print("New client created\n")
+            input("Press any key to continue\n")
+            dict_new_customer = {new_nif: {"nombre": new_name, "telefono": new_tfn}}
+            les_meves_funcions.dades.dict_clientes.update(dict_new_customer)
+            les_meves_funcions.dades.dict_new_customers.update(dict_new_customer)
+        else:
+            continue
+
+    if int(opt) == 2:
+        flg_03 = False
+        flg_32 = True
+
+    if int(opt) == 3:
+        flg_03 = False
+        flg_00 = True
+
+while flg_32:
+    opt = les_meves_funcions.funcions.getOpt("*" * 11 + "Menu Find Customers" + "*" * 11 + "\n" + "1)Find by NIF" + "\n" +
+                                             "2)Find by name" + "\n" + "3)Find top 3 highest spending customers" + "\n" +
+                                             "4)Main Menu""\n" + "5)Go back", "Option: ", [1, 2, 3, 4, 5], {}, [])
+    if int(opt) == 1:
+        nif = les_meves_funcions.funcions.new_nif("no")
+        input("\nPress any key to continue\n")
+        print("NIF: " + nif.rjust(30) + "\n" +
+              "Name: " + str(les_meves_funcions.dades.dict_clientes[nif]["nombre"]).rjust(29) + "\n" +
+              "Tfn: " + str(les_meves_funcions.dades.dict_clientes[nif]["telefono"]).rjust(30) + "\n")
+        flg_32 = False
+        flg_321 = True
+
+    if int(opt) == 2:
+        name_to_search = input("\nName to search:\n")
+        print("\n" + "NIF" + "Name".rjust(21) + "TFN".rjust(19) + "\n" + "*" * 61)
+        for i in range(len(valores_clientes)):
+            for j in range(len(valores_clientes[0 + i]["nombre"])):
+                if name_to_search in valores_clientes[0 + i]["nombre"].lower():
+                    lista_nombres.append(valores_clientes[0 + i]["nombre"])
+                    break
+                elif name_to_search in valores_clientes[0 + i]["nombre"]:
+                    lista_nombres.append(valores_clientes[0 + i]["nombre"])
+                    break
+                elif name_to_search == valores_clientes[0 + i]["nombre"]:
+                    lista_nombres.append(valores_clientes[0 + i]["nombre"])
+                    break
+                elif name_to_search not in valores_clientes[0 + i]["nombre"].lower() \
+                        and name_to_search != valores_clientes[0 + i]["nombre"] \
+                        and i == 7 and lista_nombres == []:
+                    print("\n" + "There is no name containing", name_to_search)
+                    break
+        for i in range(len(lista_nombres)):
+            print(llaves_clientes[0 + i].ljust(20) + lista_nombres[0 + i].ljust(20) + valores_clientes[0 + i]["telefono"])
+        lista_nombres = []
+        input("\nPress any key to continue\n")
+
+    if int(opt) == 3:
+        print("\n" + "Customer" + "NIF".rjust(16) + "Total purchases".rjust(36) + "\n" + "*" * 60)
+        numero_articulo = 0
+        lista_precio = []
+        llaves_dict_compras = list(les_meves_funcions.dades.dict_compras.keys())
+        valores_dict_compras = list(les_meves_funcions.dades.dict_compras.values())
+        valores_dict_clientes = list(les_meves_funcions.dades.dict_clientes.values())
+        llaves_cliente_compra = list(les_meves_funcions.dades.cliente_compra.keys())
+        valores_cliente_compra = list(les_meves_funcions.dades.cliente_compra.values())
+        llaves_compra_cliente = list(les_meves_funcions.dades.compra_cliente.keys())
+
+        for i in range(len(valores_dict_compras)):
+            precio = 0
+            numero_llaves_articulos = 0
+            articulos = valores_dict_compras[numero_articulo]["articulos"]
+            llaves_articulos = list(articulos.keys())
+            valores_articulos = list(articulos.values())
+            for j in range(len(articulos)):
+                precio += les_meves_funcions.dades.dict_articulos[llaves_articulos[numero_llaves_articulos]]["precio"] *\
+                          valores_articulos[numero_llaves_articulos]
+                numero_llaves_articulos += 1
+            numero_articulo += 1
+            lista_precio.append(precio)
+
+        lista_precio_total = [lista_precio[0] + lista_precio[1] + lista_precio[6], lista_precio[2] + lista_precio[3],
+                              lista_precio[4], lista_precio[5], lista_precio[7]]
+
+        for i in range(len(lista_precio_total)):
+            dict_nombre_total = {valores_dict_clientes[0 + i]["nombre"]: {"precio": lista_precio_total[0 + i]}}
+            les_meves_funcions.dades.dict_nombres_totales.update(dict_nombre_total)
+            dict_nif_total = {llaves_cliente_compra[0 + i]: {"precio": lista_precio_total[0 + i]}}
+            les_meves_funcions.dades.dict_nif_totales.update(dict_nif_total)
+
+        lista_nombres_totales = les_meves_funcions.funcions.order_dict_by_key(les_meves_funcions.dades.dict_nombres_totales,
+                                                                              "des", "precio")
+        lista_nif_totales = les_meves_funcions.funcions.order_dict_by_key(les_meves_funcions.dades.dict_nif_totales,
+                                                                          "des", "precio")
+
+        print(str(lista_nombres_totales[0]).ljust(21) + str(lista_nif_totales[0]) + str(lista_precio_total[0]).rjust(30) + "\n" +
+              str(lista_nombres_totales[1]).ljust(21) + str(lista_nif_totales[1]) + str(lista_precio_total[1]).rjust(30) + "\n" +
+              str(lista_nombres_totales[2]).ljust(21) + str(lista_nif_totales[2]) + str(lista_precio_total[2]).rjust(30))
+        input("\nPress any key to continue\n")
+
+    if int(opt) == 4:
+        flg_32 = False
+        flg_00 = True
+
+    if int(opt) == 5:
+        flg_32 = False
+        flg_03 = True
+
+while flg_321:
+    opt = les_meves_funcions.funcions.getOpt("*" * 5 + "Menu show customer's purchases" + "*" * 5 + "\n" + "1)Show purchases" +
+                                             "\n" + "2)Show detailed purchases" + "\n" + "3)Main Menu""\n""4)Go back", "Option: ",
+                                             [1, 2, 3], {}, [])
+    if opt == 1:
+        if nif in les_meves_funcions.dades.dict_new_customers.keys():
+            print("\n" + "Id purchase" + "Date".rjust(10) + "Total purchase".rjust(30) + "\n" + "*" * 51 +
+                  "\n" + "The customer with NIF {} has not purchases".format(nif) + "\n")
+            input("Press any key to continue")
+        else:
+            total = 0
+            lista_compras = les_meves_funcions.dades.cliente_compra[nif]
+            print("\n" + "Id purchase" + "Date".rjust(10) + "Total purchase".rjust(30) + "\n" + "*" * 51)
+            for i in range(len(lista_compras)):
+                total = 0
+                for j in range(len(les_meves_funcions.dades.dict_compras[lista_compras[i]]["articulos"])):
+                    lista_productos_compra = list(les_meves_funcions.dades.dict_compras[lista_compras[i]]["articulos"])
+                    id_producto_unico = lista_productos_compra[j]
+                    precio_producto = les_meves_funcions.dades.dict_articulos[id_producto_unico]["precio"]
+                    cantidad_producto = les_meves_funcions.dades.dict_compras[lista_compras[i]]["articulos"][id_producto_unico]
+                    total += cantidad_producto * precio_producto
+                print(str(les_meves_funcions.dades.cliente_compra[nif][contador_id_1]) +
+                      str(les_meves_funcions.dades.dict_compras[les_meves_funcions.dades.cliente_compra[nif][contador_id_1]]
+                          ["fecha"]).rjust(20) + str(total).rjust(26))
+                contador_id_1 += 1
+            input("\nPress any key to continue\n")
+
+    if opt == 2:
+        if nif in les_meves_funcions.dades.dict_new_customers.keys():
+            print("\n" + "ID" + "Date".rjust(12) + "Items".rjust(13) + "Amount".rjust(34) + "Item's price".rjust(15) +
+                  "\n" + "*" * 76 + "\n" * 2 + "The customer with NIF {} has not purchases".format(nif) + "\n")
+            input("Press any key to continue")
+        else:
+            total = 0
+            lista_compras = les_meves_funcions.dades.cliente_compra[nif]
+            for i in range(len(lista_compras)):
+                total = 0
+                print("\n" + "ID" + "Date".rjust(12) + "Items".rjust(13) + "Amount".rjust(34) +
+                      "Item's price".rjust(15) + "\n" + "*" * 76)
+                for j in range(len(les_meves_funcions.dades.dict_compras[lista_compras[i]]["articulos"])):
+                    lista_productos_compra = list(les_meves_funcions.dades.dict_compras[lista_compras[i]]["articulos"])
+                    id_producto_unico = lista_productos_compra[j]
+                    nombre_producto = les_meves_funcions.dades.dict_articulos[id_producto_unico]["nombre"]
+                    cantidad_producto = les_meves_funcions.dades.dict_compras[lista_compras[i]]["articulos"][
+                        id_producto_unico]
+                    precio_producto = les_meves_funcions.dades.dict_articulos[id_producto_unico]["precio"]
+                    total += cantidad_producto * precio_producto
+                    print(str(les_meves_funcions.dades.cliente_compra[nif][contador_id_2]).ljust(10) +
+                          str(les_meves_funcions.dades.dict_compras[
+                                  les_meves_funcions.dades.cliente_compra[nif][contador_id_2]]
+                              ["fecha"]).ljust(12) + str(nombre_producto).ljust(38) + str(cantidad_producto) +
+                          str(precio_producto).rjust(15))
+                print("-" * 76 + "\n""Total" + str(total).rjust(71))
+                contador_id_2 += 1
+            input("\nPress any key to continue\n")
+
+    if opt == 3:
+        flg_321 = False
+        flg_00 = True
+
+    if opt == 4:
+        flg_321 = False
+        flg_32 = True
+        
