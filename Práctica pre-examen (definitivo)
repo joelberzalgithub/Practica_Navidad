@@ -1,0 +1,627 @@
+from les_meves_funcions import funcions as f
+from les_meves_funcions import dades
+
+ID = 0
+end_program = False
+main_menu = True
+menu1 = False
+menu12 = False
+menu13 = False
+menu14 = False
+menu2 = False
+menu22 = False
+
+llaves_clientes = list(dades.dict_clientes.keys())
+valores_clientes = list(dades.dict_clientes.values())
+lista_nombres = []
+nif = ""
+menu3 = False
+menu32 = False
+menu321 = False
+
+while not end_program:
+    while main_menu:
+        opt = f.getOpt(
+            textOpts="*" * 15 + "Main Menu" + "*" * 15 + " \n" + "1) Items" + "\n" + "2) Purchases" + "\n" + "3) Customers" + "\n" +
+                     "4) Exit", inputOptText="Option: ", rangeList=[1, 2, 3, 4], dictionary={}, exceptions=[])
+        if opt == 1:
+            main_menu = False
+            menu1 = True
+        elif opt == 2:
+            main_menu = False
+            menu2 = True
+        elif opt == 3:
+            main_menu = False
+            menu3 = True
+        elif opt == 4:
+            main_menu = False
+            end_program = True
+
+    while menu1:
+        opt = f.getOpt(
+            textOpts="*" * 15 + "Menu Items" + "*" * 14 + " \n" + "1) New item" + "\n" + "2) Modify Item" + "\n" +
+                     "3) Find item" + "\n" + "4) List items" + "\n" + "5) Go back", inputOptText="Option: ",
+            rangeList=[1, 2, 3, 4, 5], dictionary={}, exceptions=[])
+        if opt == 1:
+            new_id = f.new_item_id()
+            new_name = f.new_item_name()
+            new_stock = f.new_item_stock()
+            new_price = f.new_item_price()
+
+            print("ID: " + str(new_id) + "\n""Name: " + str(new_name) + "\n""Stock: " +
+                  str(new_stock) + "\n""Price: " + str(new_price))
+            ans = input("Save new item? Y/y = yes : ")
+            if ans in ("Y", "y"):
+                print("Item saved !!")
+                dades.dict_articulos[int(new_id)] = {"nombre": new_name, "stock": int(new_stock),
+                                                     "precio": int(new_price)}
+                input("Press any key to continue: ")
+
+        elif opt == 2:
+            ID = int(f.find_item_id())
+            print("You want to modify the item:""\n")
+            f.print_item(ID)
+            input("Press any key to continue: ")
+            menu12 = True
+            menu1 = False
+
+        elif opt == 3:
+            menu1 = False
+            menu13 = True
+
+        elif opt == 4:
+            menu1 = False
+            menu14 = True
+        elif opt == 5:
+            menu1 = False
+            main_menu = True
+
+    while menu12:
+        opt = f.getOpt(textOpts="*" * 11 + "Menu Modify Items" + "*" * 11 + "\n""What do you want to modify:""\n" +
+                                "1) Name" + "\n" + "2) Stock" + "\n" + "3) Price" + "\n" + "4) Show item" +
+                                "\n" + "5) Main Menu""\n" + "6) Go Back", inputOptText="Option: ",
+                       rangeList=[1, 2, 3, 4, 5, 6], dictionary={}, exceptions=[])
+
+        if opt == 1:
+            new_name = f.new_item_name()
+            print("Save the item as? Y/y = yes:""\n")
+            f.print_item(ID, nombre=new_name)
+            ans = input("\n""Answer: ")
+
+            if ans in ("y", "Y"):
+                dades.dict_articulos[ID]["nombre"] = new_name
+
+        elif opt == 2:
+            new_stock = f.new_item_stock()
+            print("Save the item as? Y/y = yes:""\n")
+            f.print_item(ID, stock=new_stock)
+            ans = input("\n""Answer: ")
+
+            if ans in ("y", "Y"):
+                dades.dict_articulos[ID]["stock"] = new_stock
+        elif opt == 3:
+            new_price = f.new_item_price()
+            print("Save the item as? Y/y = yes:""\n")
+            f.print_item(ID, precio=new_price)
+            ans = input("\n""Answer: ")
+
+            if ans in ("y", "Y"):
+                dades.dict_articulos[ID]["precio"] = new_price
+        elif opt == 4:
+            f.print_item(ID)
+            input("\n""Press any key to continue: ")
+        elif opt == 5:
+            menu12 = False
+            main_menu = True
+
+        elif opt == 6:
+            menu12 = False
+            menu1 = True
+
+    while menu13:
+        opt = f.getOpt(textOpts="*" * 10 + "Menu Find Items" + "*" * 10 + "\n" +
+                                "1) Find item by ID" + "\n" + "2) Find item by name" + "\n" + "3) Main Menu" + "\n" +
+                                "4) Go Back", inputOptText="Option: ",
+                       rangeList=[1, 2, 3, 4], dictionary={}, exceptions=[])
+        if opt == 1:
+            valid = False
+            while not valid:
+                ID = input("Id to find: ")
+                if not ID.isdigit():
+                    print("ID are only numerics" + "\n")
+                    input("Press any key to continue: ")
+
+                else:
+                    ID = int(ID)
+                    valid = True
+
+            print("Items in Asian Shop Center""\n" + "*" * 50 + "\n" + "ID".rjust(4) + "  " + "Name".ljust(30) +
+                  "Stock".rjust(5) + "Price".rjust(9) + "\n" + "*" * 50)
+
+            if ID in dades.dict_articulos.keys():
+                print(str(ID).rjust(4) + "  " + dades.dict_articulos[ID]["nombre"].ljust(30) +
+                      str(dades.dict_articulos[ID]["stock"]).rjust(5) +
+                      str(dades.dict_articulos[ID]["precio"]).rjust(9) + "\n" * 2)
+            else:
+                print("There's not item with id = " + str(ID) + "\n" * 3)
+
+            input("Press any key to continue: ")
+        elif opt == 2:
+            string = ""
+            valid = False
+            while not valid:
+                string = input("What are you looking for?: ")
+                if string.isspace() or string == "":
+                    print("\n""Empty strings cannot be entered !!""\n")
+                else:
+                    string = str(string)
+                    valid = True
+
+            list_id = list(dades.dict_articulos.keys())
+            chain = ""
+            print("Items in Asian Shop Center")
+            chain += "*" * 50 + "\n" + "ID".rjust(4) + "  " + "Name".ljust(30) + "Stock".rjust(5) + "Price".rjust(
+                9) + "\n" + "*" * 50 + "\n"
+            empty = True
+            for i in range(len(list_id)):
+
+                if string in dades.dict_articulos[list_id[i]]["nombre"]:
+                    empty = False
+                    chain += str(list_id[i]).rjust(4) + "  " + str(dades.dict_articulos[list_id[i]]["nombre"]).ljust(
+                        30) + \
+                             str(dades.dict_articulos[list_id[i]]["stock"]).rjust(5) + \
+                             str(dades.dict_articulos[list_id[i]]["precio"]).rjust(9) + "\n"
+
+            if empty:
+                chain += "There's not items with the string = " + string + "\n" * 3
+
+            print(chain)
+            input("Press any key to continue: ")
+        elif opt == 3:
+            menu13 = False
+            main_menu = True
+
+        elif opt == 4:
+            menu13 = False
+            menu1 = True
+
+    while menu14:
+        opt = f.getOpt(
+            textOpts="*" * 11 + "Menu List Item" + "*" * 12 + " \n" + "1) List by ID" + "\n" + "2) List by name" + "\n" + "3) List by stock" \
+                     + "\n" + "4) List 3 best selling items" + "\n" + "5) List 3 least sold items" + "\n" + "6) Main Menu" + "\n" \
+                     + "7) Go Back", inputOptText="Option: ", rangeList=[1, 2, 3, 4, 5, 6, 7], dictionary={},
+            exceptions=[])
+
+        if opt == 1:
+            lista = f.order_list(list(dades.dict_articulos.keys()), "asc")
+            print("Items in Asian Shop Center""\n"
+                  + "*" * 50 + "\n" + "ID".rjust(4) + "  " + "Name".ljust(30) + "Stock".rjust(5) + "Price".rjust(
+                9) + "\n" + "*" * 50)
+
+            for i in lista:
+                print(str(i).rjust(4) + "  " + str(dades.dict_articulos[i]["nombre"]).ljust(30) + \
+                      str(dades.dict_articulos[i]["stock"]).rjust(5) + \
+                      str(dades.dict_articulos[i]["precio"]).rjust(9))
+            input("\n" + "Press enter to continue: ")
+
+        elif opt == 2:
+            lista = f.order_dict_by_key(dades.dict_articulos, orden="asc", key="nombre")
+            print("Items in Asian Shop Center""\n"
+                  + "*" * 50 + "\n" + "ID".rjust(4) + "  " + "Name".ljust(30) + "Stock".rjust(5) + "Price".rjust(
+                9) + "\n" + "*" * 50)
+
+            for i in lista:
+                print(str(i).rjust(4) + "  " + str(dades.dict_articulos[i]["nombre"]).ljust(30) + \
+                      str(dades.dict_articulos[i]["stock"]).rjust(5) + \
+                      str(dades.dict_articulos[i]["precio"]).rjust(9))
+            input("\n" + "Press enter to continue: ")
+
+        elif opt == 3:
+            lista = f.order_dict_by_key(dades.dict_articulos, orden="des", key="stock")
+            print("Items in Asian Shop Center""\n"
+                  + "*" * 50 + "\n" + "ID".rjust(4) + "  " + "Name".ljust(30) + "Stock".rjust(5) + "Price".rjust(
+                9) + "\n" + "*" * 50)
+
+            for i in lista:
+                print(str(i).rjust(4) + "  " + str(dades.dict_articulos[i]["nombre"]).ljust(30) + \
+                      str(dades.dict_articulos[i]["stock"]).rjust(5) + \
+                      str(dades.dict_articulos[i]["precio"]).rjust(9))
+            input("\n" + "Press enter to continue: ")
+
+        elif opt == 4:
+            lista_id = list(dades.dict_articulos.keys())
+            dict_soldprod = {}
+            for ids in lista_id:
+                sold_amount = 0
+                for k in dades.dict_compras.values():
+                    if ids in k["articulos"].keys():
+                        sold_amount += k["articulos"][ids]
+
+                dict_soldprod[ids] = sold_amount
+
+            print("Items in Asian Shop Center""\n" +
+                  "*" * 18 + "Three Best selling items" + "*" * 18 + "\n" + "ID".rjust(4) + "  " + "Name".ljust(
+                30) + "Stock".rjust(5) + "Price".rjust(
+                9) + "Sold out".rjust(10) + "\n" + "*" * 60)
+
+            lista = f.order_dict_by_key(dict_soldprod, "des")
+
+            stop = 0
+            for i in lista:
+                if stop == 3:
+                    break
+                else:
+                    print(str(i).rjust(4) + "  " + str(dades.dict_articulos[i]["nombre"]).ljust(30) + \
+                          str(dades.dict_articulos[i]["stock"]).rjust(5) + \
+                          str(dades.dict_articulos[i]["precio"]).rjust(9) + str(dict_soldprod[i]).rjust(10))
+                    stop += 1
+            input("\n" + "Press enter to continue: ")
+
+        elif opt == 5:
+            lista_id = list(dades.dict_articulos.keys())
+            dict_soldprod = {}
+            for ids in lista_id:
+                sold_amount = 0
+                for k in dades.dict_compras.values():
+                    if ids in k["articulos"].keys():
+                        sold_amount += k["articulos"][ids]
+
+                dict_soldprod[ids] = sold_amount
+
+            print("Items in Asian Shop Center""\n" +
+                  "*" * 19 + "Three Least sold items" + "*" * 19 + "\n" + "ID".rjust(4) + "  " + "Name".ljust(
+                30) + "Stock".rjust(5) + "Price".rjust(
+                9) + "Sold out".rjust(10) + "\n" + "*" * 60)
+
+            lista = f.order_dict_by_key(dict_soldprod, "asc")
+
+            stop = 0
+            for i in lista:
+                if stop == 3:
+                    break
+                else:
+                    print(str(i).rjust(4) + "  " + str(dades.dict_articulos[i]["nombre"]).ljust(30) + \
+                          str(dades.dict_articulos[i]["stock"]).rjust(5) + \
+                          str(dades.dict_articulos[i]["precio"]).rjust(9) + str(dict_soldprod[i]).rjust(10))
+                    stop += 1
+            input("\n" + "Press enter to continue: ")
+
+        elif opt == 6:
+            menu14 = False
+            main_menu = True
+
+        elif opt == 7:
+            menu14 = False
+            menu1 = True
+
+    while menu2:
+        opt = f.getOpt(
+            textOpts="*" * 12 + "Menu Purchases" + "*" * 13 + " \n" + "1) Find purchase" + "\n" + "2) List purchases" +
+                     "\n" + "3) New purchase" + "\n" + "4) Go back", inputOptText="Option: ",
+            rangeList=[1, 2, 3, 4], dictionary={}, exceptions=[])
+
+        if opt == 1:
+            print("Find Purchase")
+            input("Press any key to continue: ")
+
+        elif opt == 2:
+            menu2 = False
+            menu22 = True
+
+        elif opt == 3:
+            print("New purchase")
+            input("Press any key to continue: ")
+
+        elif opt == 4:
+            menu2 = False
+            main_menu = True
+
+    while menu22:
+        list_al_purch = "ID Compra".ljust(20) + "Client".ljust(30) + "Fecha".rjust(8) + "Total compras".rjust(
+            20) + "\n" + "*" * 78 + "\n"
+        list_purch_w_item = "ID".ljust(10) + "Customer".ljust(25) + "ID item".ljust(9) + "Name item".ljust(
+            30) + "Amount".rjust(6) + "Price".rjust(10) + "\n" + "*" * 98
+
+        opt = f.getOpt(textOpts="*" * 10 + "Menu List Purchases" + "*" * 11 + " \n" + "1) List all purchases" + "\n" \
+                                + "2) List purchases that contain some item" + "\n" + "3) Go Back" + "\n" + "4) Main menu",
+                       inputOptText="Option: ", rangeList=[1, 2, 3, 4], dictionary={}, exceptions=[])
+
+        if opt == 1:
+            keys = dades.dict_compras.keys()
+            total = len(keys)
+            # print(total)
+            lista = list(keys)
+            # print(lista)
+            for i in range(total):
+                list_al_purch += str((lista[i]).ljust(20)) + str(
+                    dades.dict_clientes[dades.compra_cliente[lista[i]]]["nombre"]) \
+                    .ljust(30) + str(dades.dict_compras[lista[i]]["fecha"])
+                articles = list(dades.dict_compras[lista[i]]["articulos"].keys())
+                suma = 0
+                price = 0
+                amount = 0
+                for j in range(len(articles)):
+                    price = (dades.dict_articulos[articles[j]]["precio"])
+                    amount = (dades.dict_compras[lista[i]]["articulos"][articles[j]])
+                    suma += price * amount
+
+                list_al_purch += str(suma).rjust(20) + "\n"
+            print(list_al_purch)
+            input("Press any key to continue\n")
+
+        elif opt == 2:
+            wholelistbyitem = ""
+            total_price = 0
+            exists = False
+            ID = input("ID del articulo: ")
+
+            if not ID.isdigit():
+                print("Please, introduce only numbers")
+            else:
+                ID = int(ID)
+                listaid = list(dades.dict_articulos.keys())
+
+                for i in range(len(listaid)):
+                    if ID == int(listaid[i]):
+                        print("Listamos compras del articulo " + str(ID) + "\n")
+                        keys = dades.dict_compras.keys()
+                        total = len(keys)
+                        lista = list(keys)
+
+                        for j in range(total):
+                            lista_compra = list(dades.dict_compras[lista[j]]["articulos"])
+                            if ID in lista_compra:
+                                wholelistbyitem += list_purch_w_item + "\n" + lista[j].ljust(10) \
+                                                   + dades.dict_clientes[dades.compra_cliente[lista[j]]][
+                                                       "nombre"].ljust(25)
+                                for k in range(len(lista_compra)):
+                                    if k == 0:
+                                        wholelistbyitem += str(
+                                            list(dades.dict_compras[lista[j]]["articulos"])[k]).rjust(
+                                            7) + "  " \
+                                                           + dades.dict_articulos[
+                                                               list(dades.dict_compras[lista[j]][
+                                                                        "articulos"])[k]][
+                                                               "nombre"].ljust(30) + \
+                                                           str(dades.dict_compras[lista[j]]["articulos"][
+                                                                   list(dades.dict_compras[lista[j]][
+                                                                            "articulos"])[
+                                                                       k]]).rjust(6) + str(
+                                            dades.dict_articulos[
+                                                list(dades.dict_compras[lista[j]]["articulos"])[k]][
+                                                "precio"]).rjust(10) + "\n"
+                                        total_price += \
+                                            dades.dict_articulos[
+                                                list(dades.dict_compras[lista[j]]["articulos"])[k]][
+                                                "precio"] * \
+                                            dades.dict_compras[lista[j]]["articulos"][
+                                                list(dades.dict_compras[lista[j]]["articulos"])[k]]
+                                    else:
+                                        wholelistbyitem += str(
+                                            list(dades.dict_compras[lista[j]]["articulos"])[k]).rjust(
+                                            42) + \
+                                                           "  " + dades.dict_articulos[
+                                                               list(dades.dict_compras[lista[j]][
+                                                                        "articulos"])[k]][
+                                                               "nombre"].ljust(30) + \
+                                                           str(dades.dict_compras[lista[j]]["articulos"][
+                                                                   list(dades.dict_compras[lista[j]][
+                                                                            "articulos"])[
+                                                                       k]]).rjust(6) + str(
+                                            dades.dict_articulos[
+                                                list(dades.dict_compras[lista[j]]["articulos"])[k]][
+                                                "precio"]).rjust(10) + "\n"
+                                        total_price += \
+                                            dades.dict_articulos[
+                                                list(dades.dict_compras[lista[j]]["articulos"])[k]][
+                                                "precio"] * dades.dict_compras[lista[j]]["articulos"][
+                                                list(dades.dict_compras[lista[j]]["articulos"])[k]]
+                                        if k == (len(lista_compra)) - 1:
+                                            wholelistbyitem += "-" * 98 + "\n" + "Total".ljust(5) + str(
+                                                total_price).rjust(85) + "\n" + "\n"
+                                            total_price = 0
+
+                        print(wholelistbyitem)
+                        vueltas = 0
+                        exists = True
+                        break
+                if not exists:
+                    print("There is no item with ID: " + str(ID))
+
+        elif opt == 3:
+            menu22 = False
+            menu2 = True
+
+        elif opt == 4:
+            menu22 = False
+            main_menu = True
+
+    while menu3:
+        opt = f.getOpt("*" * 16 + "Menu Customers" + "*" * 16 + "\n" + "1)New customer" + "\n" +
+                       "2)Find customer" + "\n" + "3)Go back", "Option: ", [1, 2, 3], {}, [])
+        if int(opt) == 1:
+            print("\n" + "*" * 6 + "New Customer" + "*" * 6)
+            new_nif = f.new_nif("yes")
+            print("DNI is correct")
+            input("\nPress any key to continue\n")
+            print("Please, introduce the name of the new customer.")
+            new_name = f.new_item_name()
+            new_tfn = f.new_tfn()
+            print("Do you want to create the new customer? Y/y = yes:" + "\n" * 2 +
+                  "NIF: " + str(new_nif).rjust(32) + "\n" +
+                  "Name: " + str(new_name).rjust(31) + "\n" +
+                  "Tfn: " + str(new_tfn).rjust(32) + "\n")
+            answer = input("Answer:\n")
+            if answer == "Y" or answer == "y":
+                print("New client created\n")
+                input("Press any key to continue\n")
+                dict_new_customer = {new_nif: {"nombre": new_name, "telefono": new_tfn}}
+                dades.dict_clientes.update(dict_new_customer)
+                dades.dict_new_customers.update(dict_new_customer)
+            else:
+                continue
+
+        if int(opt) == 2:
+            menu3 = False
+            menu32 = True
+
+        if int(opt) == 3:
+            menu3 = False
+            main_menu = True
+
+    while menu32:
+        opt = f.getOpt(
+            "*" * 11 + "Menu Find Customers" + "*" * 11 + "\n" + "1)Find by NIF" + "\n" +
+            "2)Find by name" + "\n" + "3)Find top 3 highest spending customers" + "\n" +
+            "4)Main Menu""\n" + "5)Go back", "Option: ", [1, 2, 3, 4, 5], {}, [])
+        if int(opt) == 1:
+            nif = f.new_nif("no")
+            input("\nPress any key to continue\n")
+            print("NIF: " + str(nif).rjust(30) + "\n" +
+                  "Name: " + str(dades.dict_clientes[nif]["nombre"]).rjust(29) + "\n" +
+                  "Tfn: " + str(dades.dict_clientes[nif]["telefono"]).rjust(30) + "\n")
+            menu32 = False
+            menu321 = True
+
+        if int(opt) == 2:
+            empty = True
+            name_to_search = input("\nName to search:\n")
+            print("\n" + "NIF" + "Name".rjust(21) + "TFN".rjust(19) + "\n" + "*" * 61)
+            for dni_key in dades.dict_clientes.keys():
+                if name_to_search.lower() in (dades.dict_clientes[dni_key]["nombre"]).lower():
+                    empty = False
+                    print(dni_key.ljust(20) + (dades.dict_clientes[dni_key]["nombre"]).ljust(20) + (
+                    dades.dict_clientes[dni_key]["telefono"]).ljust(20))
+
+            if empty:
+                print("There is no name containing " + str(name_to_search))
+            print("\n" * 2)
+            input("\nPress any key to continue\n")
+
+        if int(opt) == 3:
+            print("\n" + "Customer" + "NIF".rjust(16) + "Total purchases".rjust(36) + "\n" + "*" * 60)
+            numero_articulo = 0
+            lista_precio = []
+            llaves_dict_compras = list(dades.dict_compras.keys())
+            valores_dict_compras = list(dades.dict_compras.values())
+            valores_dict_clientes = list(dades.dict_clientes.values())
+            llaves_cliente_compra = list(dades.cliente_compra.keys())
+            valores_cliente_compra = list(dades.cliente_compra.values())
+            llaves_compra_cliente = list(dades.compra_cliente.keys())
+
+            for i in range(len(valores_dict_compras)):
+                precio = 0
+                numero_llaves_articulos = 0
+                articulos = valores_dict_compras[numero_articulo]["articulos"]
+                llaves_articulos = list(articulos.keys())
+                valores_articulos = list(articulos.values())
+                for j in range(len(articulos)):
+                    precio += dades.dict_articulos[llaves_articulos[numero_llaves_articulos]]["precio"] * \
+                              valores_articulos[numero_llaves_articulos]
+                    numero_llaves_articulos += 1
+                numero_articulo += 1
+                lista_precio.append(precio)
+
+            lista_precio_total = [lista_precio[0] + lista_precio[1] + lista_precio[6],
+                                  lista_precio[2] + lista_precio[3],
+                                  lista_precio[4], lista_precio[5], lista_precio[7]]
+
+            for i in range(len(lista_precio_total)):
+                dict_nombre_total = {valores_dict_clientes[0 + i]["nombre"]: {"precio": lista_precio_total[0 + i]}}
+                dades.dict_nombres_totales.update(dict_nombre_total)
+                dict_nif_total = {llaves_cliente_compra[0 + i]: {"precio": lista_precio_total[0 + i]}}
+                dades.dict_nif_totales.update(dict_nif_total)
+
+            lista_nombres_totales = f.order_dict_by_key(
+                dades.dict_nombres_totales,
+                "des", "precio")
+            lista_nif_totales = f.order_dict_by_key(dades.dict_nif_totales,
+                                                    "des", "precio")
+
+            print(
+                str(lista_nombres_totales[0]).ljust(21) + str(lista_nif_totales[0]) + str(lista_precio_total[0]).rjust(
+                    30) + "\n" +
+                str(lista_nombres_totales[1]).ljust(21) + str(lista_nif_totales[1]) + str(lista_precio_total[1]).rjust(
+                    30) + "\n" +
+                str(lista_nombres_totales[2]).ljust(21) + str(lista_nif_totales[2]) + str(lista_precio_total[2]).rjust(
+                    30))
+            input("\nPress any key to continue\n")
+
+        if int(opt) == 4:
+            menu32 = False
+            main_menu = True
+
+        if int(opt) == 5:
+            menu32 = False
+            menu3 = True
+
+    while menu321:
+        opt = f.getOpt(
+            "*" * 5 + "Menu show customer's purchases" + "*" * 5 + "\n" + "1)Show purchases" +
+            "\n" + "2)Show detailed purchases" + "\n" + "3)Main Menu""\n""4)Go back", "Option: ",
+            [1, 2, 3, 4], {}, [])
+        if opt == 1:
+            if nif in dades.dict_new_customers.keys():
+                print("\n" + "Id purchase" + "Date".rjust(10) + "Total purchase".rjust(30) + "\n" + "*" * 51 +
+                      "\n" + "The customer with NIF {} has not purchases".format(nif) + "\n")
+                input("Press any key to continue")
+            else:
+                total = 0
+                contador_id_1 = 0
+                lista_compras = dades.cliente_compra[nif]
+                print("\n" + "Id purchase" + "Date".rjust(10) + "Total purchase".rjust(30) + "\n" + "*" * 51)
+                for i in range(len(lista_compras)):
+                    total = 0
+                    for j in range(len(dades.dict_compras[lista_compras[i]]["articulos"])):
+                        lista_productos_compra = list(dades.dict_compras[lista_compras[i]]["articulos"])
+                        id_producto_unico = lista_productos_compra[j]
+                        precio_producto = dades.dict_articulos[id_producto_unico]["precio"]
+                        cantidad_producto = dades.dict_compras[lista_compras[i]]["articulos"][
+                            id_producto_unico]
+                        total += cantidad_producto * precio_producto
+                    print(str(dades.cliente_compra[nif][contador_id_1]) +
+                          str(dades.dict_compras[
+                                  dades.cliente_compra[nif][contador_id_1]]
+                              ["fecha"]).rjust(20) + str(total).rjust(26))
+                    contador_id_1 += 1
+                input("\nPress any key to continue\n")
+
+        if opt == 2:
+            if nif in dades.dict_new_customers.keys():
+                print(
+                    "\n" + "ID" + "Date".rjust(12) + "Items".rjust(13) + "Amount".rjust(34) + "Item's price".rjust(15) +
+                    "\n" + "*" * 76 + "\n" * 2 + "The customer with NIF {} has not purchases".format(nif) + "\n")
+                input("Press any key to continue")
+            else:
+                total = 0
+                contador_id_2 = 0
+                lista_compras = dades.cliente_compra[nif]
+                for i in range(len(lista_compras)):
+                    total = 0
+                    print("\n" + "ID" + "Date".rjust(12) + "Items".rjust(13) + "Amount".rjust(34) +
+                          "Item's price".rjust(15) + "\n" + "*" * 76)
+                    for j in range(len(dades.dict_compras[lista_compras[i]]["articulos"])):
+                        lista_productos_compra = list(dades.dict_compras[lista_compras[i]]["articulos"])
+                        id_producto_unico = lista_productos_compra[j]
+                        nombre_producto = dades.dict_articulos[id_producto_unico]["nombre"]
+                        cantidad_producto = dades.dict_compras[lista_compras[i]]["articulos"][
+                            id_producto_unico]
+                        precio_producto = dades.dict_articulos[id_producto_unico]["precio"]
+                        total += cantidad_producto * precio_producto
+                        print(str(dades.cliente_compra[nif][contador_id_2]).ljust(10) +
+                              str(dades.dict_compras[
+                                      dades.cliente_compra[nif][contador_id_2]]
+                                  ["fecha"]).ljust(12) + str(nombre_producto).ljust(38) + str(cantidad_producto) +
+                              str(precio_producto).rjust(15))
+                    print("-" * 76 + "\n""Total" + str(total).rjust(71))
+                    contador_id_2 += 1
+                input("\nPress any key to continue\n")
+
+        if opt == 3:
+            menu321 = False
+            main_menu = True
+
+        if opt == 4:
+            menu321 = False
+            menu32 = True
+            
